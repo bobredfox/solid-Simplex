@@ -11,7 +11,7 @@ public class initMain {
         Double[] b = {1500.0, 1200.0, 500.0};
         ArrayMatrix problem = new ArrayMatrix(matrix);
         SimplexSolver solveSystem = new SimplexSolver(problemE, problem, b);
-        solveSystem.printStep();
+        solveSystem.printStep(1);
     }
 
 

@@ -29,7 +29,6 @@ public class SimplexSolver {
         this.b = values;
         this.bases = new int[inputMatrix.getM()];
         setInitalBases();
-        System.out.println((bases[0] + 1) + " " + (bases[1] + 1) + " " + (bases[2] + 1));
     }
 
     private void setInitalBases() {
@@ -48,21 +47,23 @@ public class SimplexSolver {
                 while (basis && (i < restrictiveEquations.getM())) {
                     if (restrictiveEquations.getRow(i)[column] == 1.0 && (!one)) {
                         one = true;
-                    } else if (restrictiveEquations.getRow(i)[column] == 0.0){
-                        basis = false;
-                    } else {
-                        basis = false;
-                    }
+                    } else basis = restrictiveEquations.getRow(i)[column] == 0.0;
+                    i++;
                 }
+            } else {
+                basis = false;
             }
             if (!basis) {
                 continue;
             }
-            System.out.println(column);
             bases[basisNumber] = column;
             basisNumber++;
         }
+        for (int base : bases){
+            System.out.println("Base Column " + (base+1));
 
+        }
+        System.out.println();
     }
 
     void nextStep(){
@@ -70,8 +71,8 @@ public class SimplexSolver {
     }
 
 
-    void printStep() {
-        System.out.println("Step!");
+    void printStep(int stepNumber) {
+        System.out.println("Step " + stepNumber);
         int length = 0;
         StringBuilder lineWriter = new StringBuilder();
         for (int row = 0; row < restrictiveEquations.getM() + 2; row++) {
