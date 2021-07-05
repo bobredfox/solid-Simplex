@@ -2,13 +2,19 @@ package matrices;
 
 public class ArrayMatrix {
     private Double[][] matrixData;
+    private int n;
+    private int m;
 
     public ArrayMatrix(int n, int m){
-        matrixData = new Double[n][m];
+        matrixData = new Double[m][n];
+        this.n = n;
+        this.m = m;
     }
 
     public ArrayMatrix(Double[][] array){
         matrixData = array;
+        n = array[0].length;
+        m = array.length;
     }
 
     public void setRow(int index, Double[] inputRow){
@@ -26,5 +32,17 @@ public class ArrayMatrix {
                 System.out.print(column + ",");
             }
         }
+    }
+
+    public Double[] getRow(int row) {
+        return matrixData[row];
+    }
+
+    public int getN(){
+        return n;
+    }
+
+    public int getM(){
+        return m;
     }
 }
