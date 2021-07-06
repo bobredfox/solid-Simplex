@@ -10,25 +10,29 @@ public class SimplexSolver {
     private int[] bases;
 
     SimplexSolver(Double[] inputProblem, ArrayMatrix inputMatrix, Double[] values) {
-
+        // Works currently only with Phase II Problems
         this.restrictiveEquations = inputMatrix;
         int length = restrictiveEquations.getN();
         if (inputProblem.length < length) {
-            Double[] temp = new Double[length];
-            for (int i = 0; i < temp.length; i++) {
-                if (i < inputProblem.length) {
-                    temp[i] = inputProblem[i];
-                } else {
-                    temp[i] = 0.0;
-                }
-            }
-            this.problem = temp;
+            this.problem = extendRow(inputProblem, length);
         } else {
             this.problem = inputProblem;
         }
         this.b = values;
         this.bases = new int[inputMatrix.getM()];
         setInitalBases();
+    }
+
+    private Double[] extendRow(Double[] row, int newLength){
+        Double[] temp = new Double[newLength];
+        for (int i = 0; i < temp.length; i++) {
+            if (i < row.length) {
+                temp[i] = row[i];
+            } else {
+                temp[i] = 0.0;
+            }
+        }
+        return temp;
     }
 
     private void setInitalBases() {
@@ -59,11 +63,14 @@ public class SimplexSolver {
             bases[basisNumber] = column;
             basisNumber++;
         }
-        for (int base : bases){
-            System.out.println("Base Column " + (base+1));
+    }
 
+    public void printBases(){
+        int i = 1;
+        for(int base: bases){
+            System.out.println(i + " BaseColumn:" + base);
+            i++;
         }
-        System.out.println();
     }
 
     void nextStep(){
@@ -81,13 +88,12 @@ public class SimplexSolver {
                     lineWriter.append(part);
                     lineWriter.append(" ");
                 }
-                lineWriter.append("| " + functionvalue);
+                lineWriter.append("| ");
+                lineWriter.append(functionvalue);
                 length = lineWriter.length();
             } else if (row == 1) {
-                for (int lines = 0; lines < length + 2; lines++) {
-                    lineWriter.append("-");
-                }
-            } else if (row > 1) {
+                lineWriter.append("-".repeat(Math.max(0, length + 2)));
+            } else {
                 for (Double part : restrictiveEquations.getRow(row - 2)) {
                     lineWriter.append(part);
                     lineWriter.append(" ");
